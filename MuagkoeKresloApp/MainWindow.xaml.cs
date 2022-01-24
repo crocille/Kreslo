@@ -24,6 +24,7 @@ namespace MuagkoeKreslo
         public MainWindow()
         {
             InitializeComponent();
+            //Перекючение на страницу списка товаров
             FrNav.Navigate(new ProductList());
         }
     }

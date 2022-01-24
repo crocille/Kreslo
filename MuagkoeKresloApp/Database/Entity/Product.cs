@@ -1,4 +1,4 @@
-namespace MuagkoeKreslo.Database
+﻿namespace MuagkoeKreslo.Database
 {
     using System;
     using System.Collections.Generic;
@@ -9,8 +9,13 @@ namespace MuagkoeKreslo.Database
     using System.Linq;
     using System.Runtime.CompilerServices;
 
+    /// <summary>
+    /// Класс товара
+    /// </summary>
     [Table("Product")]
-    public partial class Product:INotifyPropertyChanged
+    public partial class Product: INotifyPropertyChanged 
+        //Наследования интерфейса INotifyPropertyChanged
+        //Для дальнейшего уведомления WPF об изменениях в классе
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
@@ -42,6 +47,7 @@ namespace MuagkoeKreslo.Database
             get { return _Image; }
             set { 
                 _Image = value;
+                //Вызов обновления при обновлении картинки
                 PropChange();
             }
         }
@@ -81,10 +87,19 @@ namespace MuagkoeKreslo.Database
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductSale> ProductSales { get; set; }
 
+        /// <summary>
+        /// Событие изменения значения в классе
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// Метод уведомления об изменении
+        /// </summary>
+        /// <param name="PropertyName">Название изменившегося поля</param>
         public void PropChange([CallerMemberName]string PropertyName = "")
         {
+            //Если событие ни кто-то слушает (оно не пустое)
             if (PropertyChanged != null)
+                //Вызываем его, передавая название поле
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
     }
