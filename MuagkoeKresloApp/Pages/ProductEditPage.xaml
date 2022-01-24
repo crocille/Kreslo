@@ -1,0 +1,78 @@
+﻿<Page x:Class="MuagkoeKreslo.Pages.ProductEditPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MuagkoeKreslo.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ProductEditPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer>
+            <StackPanel MaxWidth="600">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
+                        <Setter Property="FontSize" Value="20"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Image Source="{Binding Image, TargetNullValue={StaticResource Picture}}" Height="150" MouseDown="ImageChangeClick"/>
+                <StackPanel>
+                    <TextBlock Text="Артикул"/>
+                    <TextBox Text="{Binding ArticleNumber}"/>
+                    <TextBlock Text="Название"/>
+                    <TextBox Text="{Binding Title}"/>
+                    <TextBlock Text="Тип товара"/>
+                    <ComboBox Name="CbProductTypes" SelectedItem="{Binding ProductType}" DisplayMemberPath="Title"/>
+                    <TextBlock Text="Описание"/>
+                    <TextBox Text="{Binding Description}" TextWrapping="Wrap" AcceptsReturn="True" />
+                    <TextBlock Text="Количество человек для производства"/>
+                    <TextBox Text="{Binding ProductionPersonCount}"/>
+                    <TextBlock Text="Номер мастерской"/>
+                    <TextBox Text="{Binding ProductionWorkshopNumber}"/>
+                    <TextBlock Text="Минимальная цена"/>
+                    <TextBox Text="{Binding MinCostForAgent}"/>
+                </StackPanel>
+                <Border BorderBrush="Black" BorderThickness="1">
+                    <StackPanel>
+                        <UniformGrid Columns="3">
+                            <ComboBox Name="CbMaterials" DisplayMemberPath="Title"/>
+                            <TextBox Name="TbCount"/>
+                            <Button Content="Добавить в список" Click="btMaterialAddClick"/>
+                        </UniformGrid>
+                        <DataGrid Name="DgvMaterialsList" AutoGenerateColumns="False" IsReadOnly="True" Margin="20,10,20,50">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Название материала" Binding="{Binding Material.Title}" Width="*"/>
+                                <DataGridTextColumn Header="Количество" Binding="{Binding Count}" Width="*"/>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Удалить" Click="btMaterialDelClick"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        <UniformGrid Grid.Row="1" Columns="2">
+            <UniformGrid.Resources>
+                <Style x:Key="btDelClick" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ID}" Value="0">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </UniformGrid.Resources>
+            <Button Content="Удалить" Style="{StaticResource btDelClick}" Background="{StaticResource Accent}" Click="BtDelClick"/>
+            <Button Content="Сохранить" Click="BtSaveClick"/>
+        </UniformGrid>
+    </Grid>
+</Page>
