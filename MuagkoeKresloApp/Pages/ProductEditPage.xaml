@@ -44,9 +44,13 @@
                             <TextBox Name="TbCount"/>
                             <Button Content="Добавить в список" Click="btMaterialAddClick"/>
                         </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <TextBlock Text="Поиск:"/>
+                            <TextBox x:Name="TbMaterialSeatch" TextChanged="TbMaterialSeatchEvent"/>
+                        </UniformGrid>
                         <DataGrid Name="DgvMaterialsList" AutoGenerateColumns="False" IsReadOnly="True" Margin="20,10,20,50">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Название материала" Binding="{Binding Material.Title}" Width="*"/>
+                                <DataGridTextColumn Header="Название материала" Binding="{Binding Material.Title}" Width="2*"/>
                                 <DataGridTextColumn Header="Количество" Binding="{Binding Count}" Width="*"/>
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>

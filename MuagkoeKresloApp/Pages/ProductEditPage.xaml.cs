@@ -42,12 +42,18 @@ namespace MuagkoeKreslo.Pages
             DataContext = product;
             InitializeComponent();
             //Получаем список материалов из бд, учитывая материалы, которые уже присутствуют в товаре
-            CbMaterials.ItemsSource = EfModel.Init().Materials.ToList()
-                .Where(m => !product.ProductMaterials.Select(pm => pm.Material).Contains(m));
+            UpdateMaterialList();
             //Получаем список типов товаров из бд
             CbProductTypes.ItemsSource = EfModel.Init().ProductTypes.ToList();
-            //Записываем список используемых материалов в DGV
-            DgvMaterialsList.ItemsSource = product.ProductMaterials;
+        }
+
+        private void UpdateMaterialList() {
+            DgvMaterialsList.ItemsSource = product.ProductMaterials
+                .Where(pm=>pm.Material.Title.Contains(TbMaterialSeatch.Text)).ToList();
+            DgvMaterialsList.Items.Refresh();
+            //Обновляем материалы в комбобоксе - фильтруем список по наличию материалов в товаре
+            CbMaterials.ItemsSource = EfModel.Init().Materials.ToList()
+                .Where(m => !product.ProductMaterials.Select(pm => pm.Material).Contains(m));
         }
 
         /// <summary>
@@ -155,8 +161,7 @@ namespace MuagkoeKreslo.Pages
                     //Задаем материал и количество
                     new ProductMaterial { Material = (CbMaterials.SelectedItem as Material), Count = count }
                 );
-                //Заполняем список материалов в товаре
-                DgvMaterialsList.ItemsSource = product.ProductMaterials.ToList();
+                DgvMaterialsList.Items.Refresh();
                 //Обновляем материалы в комбобоксе - фильтруем список по наличию материалов в товаре
                 CbMaterials.ItemsSource = EfModel.Init().Materials.ToList()
                     .Where(m => !product.ProductMaterials.Select(pm => pm.Material).Contains(m));
@@ -176,11 +181,12 @@ namespace MuagkoeKreslo.Pages
             Button button = sender as Button;
             //Получаем из кнопки материал в заказе и удалем его из товара
             product.ProductMaterials.Remove(button.DataContext as ProductMaterial);
-            //Обновляем список материалов в товаре
-            DgvMaterialsList.ItemsSource = product.ProductMaterials.ToList();
-            //Обновляем материалы в комбобоксе - фильтруем список по наличию материалов в товаре
-            CbMaterials.ItemsSource = EfModel.Init().Materials.ToList()
-                .Where(m => !product.ProductMaterials.Select(pm => pm.Material).Contains(m));
+            //Обновление списка материалов
+            UpdateMaterialList();
+        }
+        private void TbMaterialSeatchEvent(object sender, TextChangedEventArgs e)
+        {
+            UpdateMaterialList();
         }
     }
 }
