@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +27,18 @@ namespace MuagkoeKreslo
             InitializeComponent();
             //Перекючение на страницу списка товаров
             FrNav.Navigate(new ProductList());
+            MessageBox.Show(String.Format(MuagkoeKresloApp.Strings.Messages.WelocomeMessage, "username"));
+        }
+
+
+        private void btSetLocaleRu(object sender, RoutedEventArgs e)
+        {
+            ((App)Application.Current).SetCulture("ru");
+        }
+
+        private void btSetLocaleEn(object sender, RoutedEventArgs e)
+        {
+            ((App)Application.Current).SetCulture("en");
         }
     }
 }
